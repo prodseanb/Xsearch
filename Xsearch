@@ -1,0 +1,93 @@
+#!/bin/bash
+searchTerm=""   
+outputFile=""                          
+banner() { 
+  echo "
+
+                                                                                   
+  ###          ##                                                          /       
+ /####       ####  /                                                     #/        
+/   ###      /####/                                                      ##        
+     ###    /   ##                                                       ##        
+      ###  /                                                             ##        
+       ###/             /###      /##       /###   ###  /###     /###    ##  /##   
+        ###            / #### /  / ###     / ###  / ###/ #### / / ###  / ## / ###  
+        /###          ##  ###/  /   ###   /   ###/   ##   ###/ /   ###/  ##/   ### 
+       /  ###        ####      ##    ### ##    ##    ##       ##         ##     ## 
+      /    ###         ###     ########  ##    ##    ##       ##         ##     ## 
+     /      ###          ###   #######   ##    ##    ##       ##         ##     ## 
+    /        ###           ### ##        ##    ##    ##       ##         ##     ## 
+   /          ###   / /###  ## ####    / ##    /#    ##       ###     /  ##     ## 
+  /            ####/ / #### /   ######/   ####/ ##   ###       ######/   ##     ## 
+ /              ###     ###/     #####     ###   ##   ###       #####     ##    ## 
+                                                                                /  
+                                                                               /   
+                                                                              /    
+                                                                             /     
+
+      "
+}
+usage() { # help menu
+  banner
+  printf "Usage: $0 [ -s searchTerm ]
+        options:
+            -s = search for exploits and shellcodes
+            -o = redirect stdout to a file
+            -h = show this menu\n\n" 1>&2 
+}
+exit_abnormal() { # show usage, exit
+  usage
+  exit 1
+}
+output() { # grep from exploits and shelllcodes stdout
+  banner
+  echo "=============EXPLOITS[$(python3 src/exploits.py | grep --color -i $searchTerm | wc -l)]; <id, file, description, date, author, type, platform, port>============="                       
+  python3 src/exploits.py | grep --color -i $searchTerm  
+  printf "\n\n=============SHELLCODES[$(python3 src/shellcodes.py | grep --color -i $searchTerm | wc -l)]; <id, file, description, date, author, type, platform>=============\n"  
+  python3 src/shellcodes.py | grep --color -i $searchTerm 
+}
+outputJSON() {
+  echo "id file description date author type platform port" > sort.txt
+  python3 src/exploits.py | grep --color -i $searchTerm >> sort.txt
+  cat sort.txt | jc --csv
+  exit 1
+}
+while getopts ":hs:o:j" options; do        
+  case "${options}" in
+    h)
+      exit_abnormal
+      ;;                  
+    s) # search exploits and shellcodes                                
+      searchTerm=${OPTARG}                  
+      ;;
+    o) # output to file
+      outputFile=${OPTARG}
+      ;;
+    j)
+      outputJSON
+      ;;
+    :) # if expected argument omitted
+      echo "Error: -${OPTARG} requires an argument."
+      exit_abnormal                       
+      ;;
+    *) # if unknown
+      echo "Invalid argument: -${OPTARG}"
+      exit_abnormal                       
+      ;;
+  esac
+done 
+shift
+if [[ "$searchTerm" == "" ]]; then
+  exit_abnormal 
+
+elif ! [[ "$outputFile" == "" ]]; then
+  banner
+  output &>> $outputFile
+  echo "[*] Results saved to: $outputFile"
+  exit 1
+
+else
+  output
+  exit 1
+fi
+exit 0                                    
