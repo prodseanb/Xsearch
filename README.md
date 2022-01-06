@@ -1,7 +1,7 @@
 <h1 align="center">Xsearch</h1>
 <p align="center">A utility to search exploitdb for exploits and shellcodes.</p>
 <code>      
-Usage: ./Xsearch [ -s searchTerm ]<br/>
+Usage: ./Xsearch [ -s searchTerm ]<br/><br/>
         options:
             -s = search for exploits and shellcodes
             -o = redirect stdout to a file
