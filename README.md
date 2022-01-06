@@ -3,7 +3,7 @@
 <p><code>      
 Usage: ./Xsearch [ -s searchTerm ]</code></p>
 <p><code>
-        options:
+        options:<br/>
             -s = search for exploits and shellcodes
             -o = redirect stdout to a file
             -x = examine the exploit
