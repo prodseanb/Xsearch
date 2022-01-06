@@ -1,0 +1,38 @@
+[
+  {
+    "id file description date author type platform port": "37814",
+    "null": [
+      " exploits/python/remote/37814.rb",
+      " Werkzeug - Debug Shell Command Execution (Metasploit)",
+      " 1970-01-01",
+      " Metasploit",
+      " remote",
+      " python",
+      " "
+    ]
+  },
+  {
+    "id file description date author type platform port": "43905",
+    "null": [
+      " exploits/multiple/remote/43905.py",
+      " Werkzeug - 'Debug Shell' Command Execution",
+      " 1970-01-01",
+      " Ali BawazeEer",
+      " remote",
+      " multiple",
+      " "
+    ]
+  },
+  {
+    "id file description date author type platform port": "50101",
+    "null": [
+      " exploits/python/webapps/50101.py",
+      " Pallets Werkzeug 0.15.4 - Path Traversal",
+      " 1970-01-01",
+      " faisalfs10x",
+      " webapps",
+      " python",
+      " "
+    ]
+  }
+]

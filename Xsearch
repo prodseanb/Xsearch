@@ -1,8 +1,11 @@
 #!/bin/bash
 searchTerm=""   
-outputFile=""                          
+outputFile=""        
+examine=""                  
 banner() { 
-  echo "
+  RED=$'\033[0;31m'
+  NC=$'\e[0m'
+  echo "${RED}
 
                                                                                    
   ###          ##                                                          /       
@@ -25,7 +28,7 @@ banner() {
                                                                               /    
                                                                              /     
 
-      "
+      ${NC}"
 }
 usage() { # help menu
   banner
@@ -33,6 +36,7 @@ usage() { # help menu
         options:
             -s = search for exploits and shellcodes
             -o = redirect stdout to a file
+            -x = examine the exploit
             -h = show this menu\n\n" 1>&2 
 }
 exit_abnormal() { # show usage, exit
@@ -46,13 +50,10 @@ output() { # grep from exploits and shelllcodes stdout
   printf "\n\n=============SHELLCODES[$(python3 src/shellcodes.py | grep --color -i $searchTerm | wc -l)]; <id, file, description, date, author, type, platform>=============\n"  
   python3 src/shellcodes.py | grep --color -i $searchTerm 
 }
-outputJSON() {
-  echo "id file description date author type platform port" > sort.txt
-  python3 src/exploits.py | grep --color -i $searchTerm >> sort.txt
-  cat sort.txt | jc --csv
-  exit 1
+examineExploit() {
+  python3 src/scrape.py $examine
 }
-while getopts ":hs:o:j" options; do        
+while getopts ":hs:o:x:" options; do        
   case "${options}" in
     h)
       exit_abnormal
@@ -63,8 +64,8 @@ while getopts ":hs:o:j" options; do
     o) # output to file
       outputFile=${OPTARG}
       ;;
-    j)
-      outputJSON
+    x)
+      examine=${OPTARG}
       ;;
     :) # if expected argument omitted
       echo "Error: -${OPTARG} requires an argument."
@@ -77,7 +78,7 @@ while getopts ":hs:o:j" options; do
   esac
 done 
 shift
-if [[ "$searchTerm" == "" ]]; then
+if [[ "$searchTerm" == "" && "$examine" == "" ]]; then
   exit_abnormal 
 
 elif ! [[ "$outputFile" == "" ]]; then
@@ -86,6 +87,10 @@ elif ! [[ "$outputFile" == "" ]]; then
   echo "[*] Results saved to: $outputFile"
   exit 1
 
+elif ! [[ "$examine" == "" ]]; then
+  banner
+  examineExploit
+  exit 1
 else
   output
   exit 1
