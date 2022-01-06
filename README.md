@@ -1,4 +1,4 @@
-<h1align="center">Xsearch</h1>
+<h1 align="center">Xsearch</h1>
 <p align="center">A utility to search exploitdb for exploits and shellcodes.</p>
 ```
                                                                                    
