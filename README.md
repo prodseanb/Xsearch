@@ -8,4 +8,4 @@ Usage: ./Xsearch [ -s searchTerm ]
             -x = examine the exploit
             -h = show this menu
 </code><br/><br/>
-![xsearchpic](https://user-images.githubusercontent.com/59718043/148459545-6a52b6ff-73bf-4674-b9e1-a88ac46948ed.JPG)
+<img>https://user-images.githubusercontent.com/59718043/148459545-6a52b6ff-73bf-4674-b9e1-a88ac46948ed.JPG</img>
